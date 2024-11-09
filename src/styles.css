@@ -26,7 +26,7 @@ body {
     width: 100%;
 
     /* hide physics debug */
-    opacity: 0;
+    /* opacity: 0; */
 }
 
 .p5-canvas-wrapper {

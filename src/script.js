@@ -29,9 +29,11 @@ pane.addBinding(debug, 'background')
  * SIZES
  */
 const sizes = {
+    initialWidth: 800,
+    initialHeight: 500,
     width: 800,
     height: 500,
-    scale: 1,
+    scaleX: 1,
 }
 
 window.addEventListener('resize', () => {
@@ -44,7 +46,10 @@ window.addEventListener('resize', () => {
     sizes.width = clientWidth
     sizes.height = clientHeight
 
-    console.log(sizes.width, sizes.height)
+    // Calculate scaling factor
+    sizes.scaleX = sizes.width / sizes.initialWidth
+    // console.log('W: ', sizes.initialWidth, '->', sizes.width)
+    // console.log('scalex: ', sizes.scaleX)
 })
 
 /**
@@ -112,13 +117,22 @@ const s = (sketch) => {
     }
 
     sketch.draw = () => {
+        // background
         const { r, g, b } = debug.background
         sketch.background(r, g, b)
 
+        // scaling coordinate in canvas
+        sketch.scale(sizes.scaleX, sizes.scaleX)
+
+        // x-coordinates & y-coordinates
+        drawCoordinates()
+
+        // all elements
         elements.forEach((elem) => {
             elem.drawShape(sketch)
         })
 
+        // static box
         sketch.push()
         sketch.fill(255)
         sketch.rect(50, 50, 100, 100)
@@ -129,13 +143,27 @@ const s = (sketch) => {
         // resize canvas
         sketch.resizeCanvas(sizes.width, sizes.height)
 
-        // scaling coordinate in canvas
-        // sketch.scale(0.5, 0.5)
-
         // redraw elements based on physics changes
         elements.forEach((elem) => {
             elem.drawShape(sketch)
         })
+    }
+
+    function drawCoordinates() {
+        sketch.textSize(10)
+
+        // coordinates x-axis
+        let i = 0
+        while (i < sizes.initialWidth) {
+            sketch.text(i, i, 10)
+            i += 50
+        }
+        // coordinates y-axis
+        i = 0
+        while (i < sizes.initialHeight) {
+            sketch.text(i, 0, i)
+            i += 50
+        }
     }
 }
 
