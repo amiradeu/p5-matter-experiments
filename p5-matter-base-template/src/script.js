@@ -29,10 +29,10 @@ pane.addBinding(debug, 'background')
  * SIZES
  */
 const sizes = {
-    initialWidth: 800,
-    initialHeight: 500,
-    width: 800,
-    height: 500,
+    initialWidth: window.innerWidth,
+    initialHeight: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
     scaleX: 1,
 }
 
