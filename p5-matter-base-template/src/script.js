@@ -1,3 +1,7 @@
+/**
+ * Base Template v1.0
+ * Last Updated 11/11/2024
+ */
 import { Pane } from 'tweakpane'
 import {
     Engine,
