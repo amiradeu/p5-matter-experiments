@@ -1,13 +1,12 @@
 /**
- * Base Template v1.0
- * Last Updated 11/11/2024
+ * Base Template v1.1
+ * Last Updated 12/11/2024
  */
 import { Pane } from 'tweakpane'
 import {
     Engine,
     Render,
     Runner,
-    Bodies,
     Composite,
     Common,
     Mouse,
@@ -16,18 +15,26 @@ import {
 import p5 from 'p5'
 
 import { Box } from './Box/Box'
+import { Walls } from './Walls/Walls'
 
 /**
  * DEBUG
  */
 // debug object
 const debug = {
-    background: { r: 228, g: 238, b: 245 },
+    background: '#E4EEF5',
 }
 
 // tweakpane gui
 const pane = new Pane()
-pane.addBinding(debug, 'background')
+const p1 = pane.addFolder({
+    title: 'Canvas',
+})
+p1.addBinding(debug, 'background')
+
+const p2 = pane.addFolder({
+    title: 'Box',
+})
 
 /**
  * SIZES
@@ -111,6 +118,7 @@ Composite.add(world, mouseConstraint)
  * BASE
  */
 let elements = []
+let staticElements = []
 const s = (sketch) => {
     sketch.setup = () => {
         sketch.createCanvas(
@@ -136,6 +144,10 @@ const s = (sketch) => {
             elem.drawShape(sketch)
         })
 
+        staticElements.forEach((elem) => {
+            elem.drawShape(sketch)
+        })
+
         // static box
         sketch.push()
         sketch.fill(255)
@@ -149,6 +161,10 @@ const s = (sketch) => {
 
         // redraw elements based on physics changes
         elements.forEach((elem) => {
+            elem.drawShape(sketch)
+        })
+
+        staticElements.forEach((elem) => {
             elem.drawShape(sketch)
         })
     }
@@ -188,14 +204,6 @@ for (let i = 0; i < 10; i++) {
     elements.push(box)
 }
 
-// Floor
-const ground = Bodies.rectangle(
-    sizes.width / 2,
-    sizes.height,
-    sizes.width,
-    50,
-    {
-        isStatic: true,
-    }
-)
-Composite.add(world, [ground])
+// Four-sided Walls
+const walls = new Walls(world, sizes.width, sizes.height)
+staticElements.push(walls)
