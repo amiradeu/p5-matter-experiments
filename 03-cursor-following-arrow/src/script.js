@@ -58,7 +58,7 @@ p2.addBinding(arrowDebug, 'symbol')
 p2.addBinding(arrowDebug, 'size', {
     step: 1,
     min: 0,
-    max: 500,
+    max: 200,
 }).on('change', (event) => {
     // on finish change
     if (event.last) {

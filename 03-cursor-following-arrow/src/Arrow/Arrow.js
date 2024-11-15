@@ -1,11 +1,16 @@
 import { Bodies, Body, Composite } from 'matter-js'
 
-function calcAngleDegrees(x, y) {
-    return (Math.atan2(y, x) * 180) / Math.PI
-}
-
-function lerp(start, end, amt) {
-    return (1 - amt) * start + amt * end
+/**
+ * Code by https://stackoverflow.com/a/67219519
+ * @param {*} A source angle
+ * @param {*} B goal angle
+ * @param {*} w
+ * @returns
+ */
+function rLerp(A, B, w) {
+    let CS = (1 - w) * Math.cos(A) + w * Math.cos(B)
+    let SN = (1 - w) * Math.sin(A) + w * Math.sin(B)
+    return Math.atan2(SN, CS)
 }
 
 export class Arrow {
@@ -26,7 +31,7 @@ export class Arrow {
 
     createBody() {
         const bodyProperties = {
-            restitution: 1.0, // bouncy
+            restitution: 0.8, // bouncy
         }
         this.body = new Bodies.circle(
             this.x,
@@ -51,13 +56,13 @@ export class Arrow {
 
         sketch.translate(x, y)
 
-        //
-        this.angle += this.targetAngle * 0.2
-        console.log('target:', this.targetAngle)
-        console.log('curr angle:', this.angle)
+        // Linear interpolation
+        // smooth movement of angle to destination
+        const currAngle = rLerp(this.angle, this.targetAngle, 0.1)
+        this.angle = currAngle
+        // console.log('target:', this.targetAngle, ' curr angle:', this.angle)
 
-        sketch.angleMode(sketch.DEGREES)
-        sketch.rotate(this.angle)
+        sketch.rotate(currAngle)
 
         // match with physics
         sketch.rectMode(sketch.CENTER)
@@ -81,17 +86,14 @@ export class Arrow {
 
     // orient to face cursor
     updateOrientation(sketch) {
+        let { x, y } = this.body.position
         const cursorX = sketch.mouseX
         const cursorY = sketch.mouseY
         // console.log('cursorX: ', cursorX, 'cursorY: ', cursorY)
 
-        let { x, y } = this.body.position
+        // get the angle from body position to cursor
         this.targetAngle = sketch.atan2(cursorY - y, cursorX - x)
         // console.log('targetAngle: ', targetAngle)
-
-        // update angle
-        // this.angle = lerp(this.angle, angle, 0.1)
-        // this.angle = targetAngle
     }
 
     // update ball size

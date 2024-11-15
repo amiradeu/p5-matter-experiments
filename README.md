@@ -9,3 +9,7 @@ A collection of experiments
 ### [02 Soft Body Smiley](https://github.com/amiradeu/p5-matter-experiments/tree/main/02-soft-body-smiley)
 
 <img src='./02-soft-body-smiley/demo/bouncy-smiley.gif'>
+
+### [03 Cursor Following Arrows](https://github.com/amiradeu/p5-matter-experiments/tree/main/03-cursor-following-arrow)
+
+<img src="./03-cursor-following-arrow/demo/demo.gif">
