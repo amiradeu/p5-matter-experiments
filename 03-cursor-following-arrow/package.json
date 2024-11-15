@@ -1,0 +1,20 @@
+{
+    "name": "cursor-following-arrow",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "dependencies": {
+        "leva": "^0.9.34",
+        "matter-js": "^0.20.0",
+        "p5": "^1.11.1",
+        "tweakpane": "^4.0.5"
+    },
+    "devDependencies": {
+        "vite": "^5.2.11",
+        "vite-plugin-restart": "^0.4.0"
+    }
+}
