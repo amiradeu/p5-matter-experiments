@@ -4,6 +4,10 @@ function calcAngleDegrees(x, y) {
     return (Math.atan2(y, x) * 180) / Math.PI
 }
 
+function lerp(start, end, amt) {
+    return (1 - amt) * start + amt * end
+}
+
 export class Arrow {
     constructor(world, x, y, size, debug) {
         this.world = world
@@ -15,6 +19,7 @@ export class Arrow {
 
         // initial angle
         this.angle = 0
+        this.targetAngle = 0
 
         this.createBody()
     }
@@ -43,11 +48,16 @@ export class Arrow {
         sketch.push()
 
         let { x, y } = this.body.position
-        let angle = this.angle
 
         sketch.translate(x, y)
+
+        //
+        this.angle += this.targetAngle * 0.2
+        console.log('target:', this.targetAngle)
+        console.log('curr angle:', this.angle)
+
         sketch.angleMode(sketch.DEGREES)
-        sketch.rotate(angle)
+        sketch.rotate(this.angle)
 
         // match with physics
         sketch.rectMode(sketch.CENTER)
@@ -76,10 +86,12 @@ export class Arrow {
         // console.log('cursorX: ', cursorX, 'cursorY: ', cursorY)
 
         let { x, y } = this.body.position
-        const angle = sketch.atan2(cursorY - y, cursorX - x)
-        // console.log('angle: ', angle)
+        this.targetAngle = sketch.atan2(cursorY - y, cursorX - x)
+        // console.log('targetAngle: ', targetAngle)
+
         // update angle
-        this.angle = angle
+        // this.angle = lerp(this.angle, angle, 0.1)
+        // this.angle = targetAngle
     }
 
     // update ball size
